@@ -66,11 +66,9 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-REVIEW_COMMENT
+## Endpoints
 ```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code. 
 
-Endpoints
 GET '/categories'
 GET ...
 POST ...
@@ -87,7 +85,39 @@ GET '/categories'
 '5' : "Entertainment",
 '6' : "Sports"}
 
+
+GET '/questions'
+- Gets a list of questions on the current page, 10 questions per page
+- Request Arguments: page number
+- Returns: An object with a key called 'questions' that contains a list of questions
+
+DELETE '/questions/<int:qid>/delete'
+- Deletes the question with the specified question id
+- Request Arguments: None
+- Returns: An object with key 'deleted' that specifies which question id was deleted
+
+POST '/add'
+- Adds the user inputted question
+- Request Arguments: An object with keys 'question', 'answer', 'category', 'difficulty' 
+- Returns: An object indicating success of the addition
+
+POST '/questions/search'
+- Searches for the user inputted search term. Any question containing the search term will be returned, non case sensitive.
+- Request Arguments: The search term
+- Returns: An object with key 'questions' that is a list of the questions that meet the search requirement.
+
+GET '/categories/<int:cid>/questions'
+- Gets a list of all the questions in the selected category
+- Request Arguments: None
+- Returns: An object with key 'questions' that is a list of questions in the requested category.
+
+POST '/play'
+- Starts a game of trivia or continues on with the existing game. 
+- Request Arguments: Previous questions - a list of all the questions already seen by user. Quiz category - the category that the quiz is in.
+- Returns: An object with key 'question' which is the question that is displayed to the user.
+
 ```
+
 
 
 ## Testing
