@@ -16,9 +16,9 @@ CORS(app)
 @TODO uncomment the following line to initialize the database
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
-
-db_drop_and_create_all()
 '''
+db_drop_and_create_all()
+
 
 ## ROUTES
 '''
@@ -35,8 +35,8 @@ db_drop_and_create_all()
 def get_drinks():
     drinks = Drink.query.all()
 
-    if drinks is None:
-        abort(404)
+    #if drinks is None:
+    #    abort(404)
 
     drinks_short = [d.short() for d in drinks]
 
@@ -59,8 +59,8 @@ def get_drinks():
 def get_drinks_detail(payload):
     drinks = Drink.query.all()
 
-    if len(drinks) == 0:
-        abort(404)
+    #if len(drinks) == 0:
+    #    abort(404)
 
     drinks_long = [d.long() for d in drinks]
 
@@ -95,6 +95,10 @@ def create_drink(payload):
     if not title or not recipe:
         abort(422)
 
+    drink = Drink.query.filter(Drink.title == title).one_or_none()
+    if drink:
+        abort(423)
+
     drink = Drink(title=title, recipe=recipe_str)
     drink.insert()
 
@@ -125,13 +129,13 @@ def update_drink(payload, id):
         abort(404)
 
     data = request.json
-    title = data['title']
-    recipe = data['recipe']
-    recipe_str = str(recipe).replace("\'", "\"")
+    title = data.get('title')
+    recipe = data.get('recipe')
 
     if title:
         drink.title = title
     if recipe:
+        recipe_str = str(recipe).replace("\'", "\"")
         drink.recipe = recipe_str
 
     drink.update()
@@ -199,3 +203,13 @@ def unauthorized(error):
                     "error": 401,
                     "message": "unauthorized"
                     }), 401
+
+
+@app.errorhandler(423)
+def unauthorized(error):
+    return jsonify({
+                    "success": False,
+                    "error": 423,
+                    "message": "duplicative"
+                    }), 423
+
