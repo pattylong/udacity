@@ -1,13 +1,11 @@
 import os
-from sqlalchemy import Column, String, Integer, ForeignKey, Table, MetaData
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from app import db
 from flask import Flask
 import json
 
 
-Base = declarative_base()
 
 
 '''
@@ -25,40 +23,40 @@ def db_drop_and_create_all():
 
 # ------------- RELATIONSHIP TABLES -----------
 
-recipeTags = Table('recipeTag', Base.metadata,
-                   Column('recipe_id', Integer, ForeignKey('recipe.id'), primary_key=True),
-                   Column('tag_id', Integer, ForeignKey('tag.id'), primary_key=True)
+recipeTags = db.Table('recipeTags',
+                   db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True),
+                   db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
                    )
 
 
 # ------------- MODELS -----------
 
-class User(Base):
+class User(db.Model):
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(30), unique=True, nullable=False)
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(String(30), unique=True, nullable=False)
     recipes = db.relationship('Recipe', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
 
 
-class Recipe(Base):
+class Recipe(db.Model):
     __tablename__ = 'recipe'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    name = Column(String(100), nullable=False)
-    instructions = Column(String)
-    ingredients = Column(String)
-    recipe_link = Column(String)
-    tags = relationship('Tag', secondary=recipeTags, lazy='subquery',
+    id = db.Column(Integer, primary_key=True)
+    user_id = db.Column(Integer, ForeignKey('user.id'), nullable=False)
+    name = db.Column(String(100), nullable=False)
+    instructions = db.Column(String)
+    ingredients = db.Column(String)
+    recipe_link = db.Column(String)
+    tags = db.relationship('Tag', secondary=recipeTags, lazy='subquery',
                          backref=db.backref('recipes', lazy=True))
 
 
-class Tag(Base):
+class Tag(db.Model):
     __tablename__ = 'tag'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True, nullable=False)
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(String(50), unique=True, nullable=False)
 
 
 """

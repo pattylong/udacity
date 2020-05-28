@@ -9,7 +9,7 @@ from functools import wraps
 
 from app import app
 from app.forms import LoginForm
-from models import User, Recipe, Tag, db
+from app.models import User, Recipe, Tag, db
 
 
 """
@@ -22,6 +22,7 @@ from models import User, Recipe, Tag, db
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def home():
+    #return "hello"
     return render_template('index.html')
 
 
@@ -49,14 +50,13 @@ def login():
     if form.validate_on_submit():
         flash('Login requested for user {}, remember me={}'.format(
             form.username.data, form.remember_me.data))
-        return redirect('/index')
-    return render_template(url_for('index'), title='Sign In', form=form)
+        return redirect(url_for('index'))
+    return render_template('login.html', title='Sign In', form=form)
 
 
 @app.route('/users', methods=['POST'])
 def add_user():
     return None
-
 
 
 @app.route('/recipes', methods=['GET'])

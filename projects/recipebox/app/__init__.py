@@ -1,14 +1,15 @@
-import os
-import logging
-import sys
-sys.path.append("/Users/pattylong/Desktop/repo/udacity/FSND/projects/recipebox/app")
-from flask import Flask, request, abort, jsonify, render_template
+# import os
+# import logging
+# import sys
+# sys.path.append("/Users/pattylong/Desktop/repo/udacity/FSND/projects/recipebox/app")
+
+from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-#from flask_cors import CORS
-#from models import setup_db, db_drop_and_create_all
+# from flask_cors import CORS
+# from models import setup_db, db_drop_and_create_all
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -18,7 +19,7 @@ migrate = Migrate(app, db)
 
 from app import routes, models
 
-#db_drop_and_create_all(db)
+# db_drop_and_create_all(db)
 
 
 # if __name__ == '__main__':
