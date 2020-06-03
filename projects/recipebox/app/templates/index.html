@@ -5,5 +5,8 @@
 {% block content %}
     <h1>Recipe Box</h1>
     <p>Welcome to your recipe box betch.</p>
+    {% if not current_user.is_anonymous %}
+        <p>I mean {{ current_user.name }}.</p>
+    {% endif %}
 
 {% endblock %}
