@@ -1,11 +1,15 @@
 # configurations
 import os
 import logging
+from dotenv import load_dotenv
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 class Config(object):
+    SECRET_KEY = os.environ.get('SECRET_KEY') or os.urandom(32)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'postgresql://pattylong:cat@localhost:5432/recipe'
-    SECRET_KEY = os.urandom(32)
     LOGGING_LOCATION = 'recipe_app.log'
     LOGGING_LEVEL = logging.DEBUG
     LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -15,3 +19,5 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['pattygxlong@gmail.com']
+    POSTS_PER_PAGE = 3
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
